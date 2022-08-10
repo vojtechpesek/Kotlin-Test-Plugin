@@ -1,0 +1,11 @@
+#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME}
+
+#end
+#parse("File Header.java")
+class ${NAME} {
+
+    @kotlin.test.Test
+    fun testMethod() {
+        TODO("Not yet implemented")
+    }
+}
