@@ -21,7 +21,7 @@ import javax.swing.Icon
 
 class KotlinTestFramework : TestFramework {
 
-    override fun getDefaultSuperClass(): String = "kotlin.test.Test"
+    override fun getDefaultSuperClass(): String = ""
 
     private fun isUnderTestSources(clazz: PsiClass): Boolean {
         val psiFile = clazz.containingFile
@@ -59,31 +59,10 @@ class KotlinTestFramework : TestFramework {
     // kotest does not use method as tests
     override fun isIgnoredMethod(element: PsiElement?): Boolean = false
 
-    override fun findSetUpMethod(clazz: PsiElement): PsiElement? =
-        findBeforeTestBlock(clazz) ?: findBeforeTestFunction(clazz)
+    override fun findSetUpMethod(clazz: PsiElement): PsiElement? = null
 
-    override fun findTearDownMethod(clazz: PsiElement): PsiElement? =
-        findAfterTestBlock(clazz) ?: findAfterTestFunction(clazz)
+    override fun findTearDownMethod(clazz: PsiElement): PsiElement? = null
 
-    private fun findBeforeTestBlock(clazz: PsiElement): PsiElement? {
-        return clazz.getChildrenOfType<KtNameReferenceExpression>().firstOrNull { it.text == "beforeTest" }
-    }
-
-    private fun findAfterTestBlock(clazz: PsiElement): PsiElement? {
-        return clazz.getChildrenOfType<KtNameReferenceExpression>().firstOrNull { it.text == "afterTest" }
-    }
-
-    private fun findBeforeTestFunction(clazz: PsiElement): PsiElement? {
-        return clazz.getChildrenOfType<KtNamedFunction>()
-            .filter { it.name == "beforeTest" }
-            .firstOrNull { it.valueParameters.size == 1 }
-    }
-
-    private fun findAfterTestFunction(clazz: PsiElement): PsiElement? {
-        return clazz.getChildrenOfType<KtNamedFunction>()
-            .filter { it.name == "afterTest" }
-            .firstOrNull { it.valueParameters.size == 1 }
-    }
 
     // kotest does not use method as tests
     override fun isTestMethod(element: PsiElement?): Boolean = false
@@ -91,11 +70,10 @@ class KotlinTestFramework : TestFramework {
     // kotest does not use method as tests
     override fun isTestMethod(element: PsiElement?, checkAbstract: Boolean): Boolean = false
 
-    override fun getSetUpMethodFileTemplateDescriptor(): FileTemplateDescriptor? = null
-    override fun getTearDownMethodFileTemplateDescriptor(): FileTemplateDescriptor? = null
+    override fun getSetUpMethodFileTemplateDescriptor(): FileTemplateDescriptor = FileTemplateDescriptor("Kotlin Test After.kt")
+    override fun getTearDownMethodFileTemplateDescriptor(): FileTemplateDescriptor = FileTemplateDescriptor("Kotlin Test Before.kt")
 
-    // we don't use this but it's marked as non null so must return it
-    override fun getTestMethodFileTemplateDescriptor(): FileTemplateDescriptor = FileTemplateDescriptor("unused")
+    override fun getTestMethodFileTemplateDescriptor(): FileTemplateDescriptor = FileTemplateDescriptor("Kotlin Test Method.kt")
 
     override fun isLibraryAttached(module: Module): Boolean {
         val scope = GlobalSearchScope.allScope(module.project)

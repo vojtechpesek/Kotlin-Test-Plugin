@@ -3,9 +3,5 @@
 #end
 #parse("File Header.java")
 class ${NAME} {
-
-    @kotlin.test.Test
-    fun testMethod() {
-        TODO("Not yet implemented")
-    }
+    ${BODY}
 }
