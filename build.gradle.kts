@@ -4,8 +4,8 @@ plugins {
     id("org.jetbrains.intellij") version "1.5.2"
 }
 
-group = "cz.pesek"
-version = "1.0-SNAPSHOT"
+group = "eu.livesport"
+version = "0.1-alpha"
 
 repositories {
     mavenCentral()
