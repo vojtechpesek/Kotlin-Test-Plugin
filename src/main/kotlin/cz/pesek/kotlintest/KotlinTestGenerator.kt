@@ -5,7 +5,6 @@ import com.intellij.codeInsight.CodeInsightUtil
 import com.intellij.ide.fileTemplates.FileTemplate
 import com.intellij.ide.fileTemplates.FileTemplateManager
 import com.intellij.ide.fileTemplates.FileTemplateUtil
-import com.intellij.lang.LanguageImportStatements
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.fileEditor.ex.IdeDocumentHistory
 import com.intellij.openapi.project.Project
@@ -13,7 +12,6 @@ import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.util.Computable
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
-import com.intellij.psi.codeStyle.JavaCodeStyleManager
 import com.intellij.psi.impl.source.PostprocessReformattingAspect
 import com.intellij.testIntegration.createTest.CreateTestDialog
 import com.intellij.testIntegration.createTest.TestGenerator
@@ -21,8 +19,13 @@ import com.intellij.util.IncorrectOperationException
 import org.jetbrains.kotlin.idea.KotlinLanguage
 import org.jetbrains.kotlin.idea.core.ShortenReferences
 import org.jetbrains.kotlin.idea.refactoring.memberInfo.toKotlinMemberInfo
+import org.jetbrains.kotlin.psi.KtClass
+import org.jetbrains.kotlin.psi.KtClassBody
+import org.jetbrains.kotlin.psi.KtNamedFunction
+import org.jetbrains.plugins.groovy.lang.psi.util.childrenOfType
 import java.util.*
 
+@Suppress("InvalidBundleOrProperty")
 class KotlinTestGenerator : TestGenerator {
 
     override fun toString(): String = KotlinLanguage.INSTANCE.displayName
@@ -34,23 +37,22 @@ class KotlinTestGenerator : TestGenerator {
                     generateTestFile(project, d)
                 } catch (e: IncorrectOperationException) {
                     ApplicationManager.getApplication().invokeLater {
-                        val message = CodeInsightBundle.message("intention.error.cannot.create.class.message", d.className)
+                        val message =
+                            CodeInsightBundle.message("intention.error.cannot.create.class.message", d.className)
                         val title = CodeInsightBundle.message("intention.error.cannot.create.class.title")
                         Messages.showErrorDialog(project, message, title)
                     }
                     null
                 }
 
-                if (file != null) {
+                file?.let {
                     // without this the file is created but the caret stays in the original file
                     CodeInsightUtil.positionCursor(project, file, file)
 
-                    // Optimize fully qualified imports
-                    // doesnt work todo
-                    LanguageImportStatements.INSTANCE.forFile(file).forEach {
-                        if (it.supports(file)) {
-                            it.processFile(file)
-                        }
+                    // Find annotations on the functions from templates and shorten references
+                    val classBody = file.childrenOfType<KtClass>().first().childrenOfType<KtClassBody>().first()
+                    classBody.childrenOfType<KtNamedFunction>().forEach {
+                        ShortenReferences.DEFAULT.process(it.annotationEntries.first())
                     }
                 }
                 file
@@ -102,7 +104,12 @@ class KotlinTestGenerator : TestGenerator {
 
             props.setProperty("BODY", body.toString())
 
-            return FileTemplateUtil.createFromTemplate(classTemplate, d.className, props, d.targetDirectory) as PsiFile
+            return FileTemplateUtil.createFromTemplate(
+                classTemplate,
+                d.className,
+                props,
+                d.targetDirectory
+            ) as PsiFile
         }
         return null
     }
