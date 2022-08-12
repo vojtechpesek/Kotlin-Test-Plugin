@@ -12,4 +12,4 @@ The plugin defines several file templates and uses them to generate test class w
 - [ ] Publish plugin on IntelliJ Plugin site
 - [ ] Create tests
 - [ ] Setup GitHub CI
-- [ ] 
+- [ ] Documentation on How to contribute
