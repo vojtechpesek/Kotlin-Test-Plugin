@@ -1,20 +1,20 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
     <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
-    <id>cz.pesek.KotlinTest</id>
+    <id>eu.livesport.KotlinTest</id>
 
     <!-- Public plugin name should be written in Title Case.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
     <name>Kotlin Test</name>
 
     <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
-    <vendor email="pesek.vojtech@livesport.eu" url="https://www.yourcompany.com">Vojtech Pesek</vendor>
+    <vendor email="vojtech.pesek@livesport.eu" url="https://www.livesport.eu">Vojtech Pesek</vendor>
 
     <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
          Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
     <description><![CDATA[
-    Generates kotlin test that have minimum number of chars.
+    Add support for generating Kotlin tests in Android Studio. The plugin is in early phase of development, find out more on: https://github.com/vojtechpesek/Kotlin-Test-Plugin
   ]]></description>
 
     <!-- Product and plugin compatibility requirements.
@@ -25,7 +25,7 @@
     <depends>org.jetbrains.plugins.gradle</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <testFramework id="Kotlin test" implementation="cz.pesek.kotlintest.KotlinTestFramework"/>
-        <testGenerator language="kotlin" implementationClass="cz.pesek.kotlintest.KotlinTestGenerator"/>
+        <testFramework id="Kotlin test" implementation="eu.livesport.kotlintest.KotlinTestFramework"/>
+        <testGenerator language="kotlin" implementationClass="eu.livesport.kotlintest.KotlinTestGenerator"/>
     </extensions>
 </idea-plugin>

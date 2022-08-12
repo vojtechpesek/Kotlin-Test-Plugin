@@ -1,4 +1,4 @@
-package cz.pesek.kotlintest
+package eu.livesport.kotlintest
 
 import com.intellij.ide.fileTemplates.FileTemplateDescriptor
 import com.intellij.lang.Language

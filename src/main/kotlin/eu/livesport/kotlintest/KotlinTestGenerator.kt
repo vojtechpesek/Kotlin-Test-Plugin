@@ -1,4 +1,4 @@
-package cz.pesek.kotlintest
+package eu.livesport.kotlintest
 
 import com.intellij.codeInsight.CodeInsightBundle
 import com.intellij.codeInsight.CodeInsightUtil
