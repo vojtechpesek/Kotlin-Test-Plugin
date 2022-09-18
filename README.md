@@ -8,7 +8,7 @@ The plugin defines several file templates and uses them to generate test class w
 - [x] SetUp and Teardown methods
 - [x] Shorten annotation using imports
 - [ ] Select commonMain as source folder
-- [ ] Create icon
+- [x] Create icon
 - [ ] Publish plugin on IntelliJ Plugin site
 - [ ] Create tests
 - [ ] Setup GitHub CI

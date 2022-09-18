@@ -76,8 +76,6 @@ class KotlinTestFramework : TestFramework {
     override fun getTestMethodFileTemplateDescriptor(): FileTemplateDescriptor = FileTemplateDescriptor("Kotlin Test Method.kt")
 
     override fun isLibraryAttached(module: Module): Boolean {
-        val scope = GlobalSearchScope.allScope(module.project)
-        val c = JavaPsiFacade.getInstance(module.project).findClass(defaultSuperClass, scope)
-        return c != null
+        return true
     }
 }

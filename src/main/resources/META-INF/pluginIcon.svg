@@ -1,12 +1,18 @@
-<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M32.0845 7.94025V4H24.0203V7.9896H16.029V4H7.91553V7.94025H4V36H16.0044V32.0045C16.0058 30.9457 16.4274 29.9308 17.1766 29.1826C17.9258 28.4345 18.9412 28.0143 20 28.0143C21.0588 28.0143 22.0743 28.4345 22.8234 29.1826C23.5726 29.9308 23.9942 30.9457 23.9956 32.0045V36H36V7.94025H32.0845Z"
-          fill="url(#paint0_linear)"/>
-    <defs>
-        <linearGradient id="paint0_linear" x1="2.94192" y1="4.89955" x2="37.7772" y2="39.7345"
-                        gradientUnits="userSpaceOnUse">
-            <stop offset="0.15937" stop-color="#3BEA62"/>
-            <stop offset="0.5404" stop-color="#3C99CC"/>
-            <stop offset="0.93739" stop-color="#6B57FF"/>
-        </linearGradient>
-    </defs>
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 21" width="21" height="21">
+	<title>Kotlin_Icon_2021-svg</title>
+	<defs>
+		<radialGradient id="g1" cx="19.9" cy=".8" r="23.5" gradientUnits="userSpaceOnUse">
+			<stop offset="0" stop-color="#e44857"/>
+			<stop offset=".5" stop-color="#c711e1"/>
+			<stop offset="1" stop-color="#7f52ff"/>
+		</radialGradient>
+	</defs>
+	<style>
+		.s0 { fill: #000000 } 
+		.s1 { fill: url(#g1) } 
+		.s2 { fill: #5aff2f } 
+	</style>
+	<path id="Tvar 1" class="s0" d="m0 0h21v21h-21z"/>
+	<path id="Layer" class="s1" d="m20.6 20.5h-20.6v-20.5h20.6l-10.5 10.1z"/>
+	<path id="✓" class="s2" aria-label="✓"  d="m9.8 13.3q0.4 0 0.6 0.8 0.4 1.4 0.6 1.4 0.1 0 0.3-0.2 2.9-5.3 5.5-8.6 0.6-0.8 2.1-0.8 0.3 0 0.4 0.1 0.1 0 0.1 0.1 0 0.2-0.3 0.7-4.1 5.4-7.6 11.5-0.2 0.4-1 0.4-0.7 0-0.9-0.1-0.3-0.2-0.8-1.8-0.6-1.8-0.6-2.2 0-0.5 0.8-1 0.4-0.3 0.8-0.3z"/>
 </svg>
