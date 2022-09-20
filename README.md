@@ -7,7 +7,7 @@ The plugin defines several file templates and uses them to generate test class w
 - [x] Generate Test Class using Dialog with selectable methods
 - [x] SetUp and Teardown methods
 - [x] Shorten annotation using imports
-- [ ] Select commonMain as source folder
+- [x] Select commonMain as source folder
 - [x] Create icon
 - [ ] Publish plugin on IntelliJ Plugin site
 - [ ] Create tests
