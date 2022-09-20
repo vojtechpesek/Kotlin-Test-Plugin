@@ -7,9 +7,12 @@ import com.intellij.ide.fileTemplates.FileTemplateManager
 import com.intellij.ide.fileTemplates.FileTemplateUtil
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.fileEditor.ex.IdeDocumentHistory
+import com.intellij.openapi.module.ModuleUtilCore
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.roots.ModuleRootManager
 import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.util.Computable
+import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.impl.source.PostprocessReformattingAspect
@@ -18,12 +21,14 @@ import com.intellij.testIntegration.createTest.TestGenerator
 import com.intellij.util.IncorrectOperationException
 import org.jetbrains.kotlin.idea.KotlinLanguage
 import org.jetbrains.kotlin.idea.core.ShortenReferences
+import org.jetbrains.kotlin.idea.core.util.toPsiDirectory
 import org.jetbrains.kotlin.idea.refactoring.memberInfo.toKotlinMemberInfo
 import org.jetbrains.kotlin.psi.KtClass
 import org.jetbrains.kotlin.psi.KtClassBody
 import org.jetbrains.kotlin.psi.KtNamedFunction
 import org.jetbrains.plugins.groovy.lang.psi.util.childrenOfType
-import java.util.*
+import java.io.IOException
+import java.util.Properties
 
 @Suppress("InvalidBundleOrProperty")
 class KotlinTestGenerator : TestGenerator {
@@ -31,26 +36,29 @@ class KotlinTestGenerator : TestGenerator {
     override fun toString(): String = KotlinLanguage.INSTANCE.displayName
 
     override fun generateTest(project: Project, d: CreateTestDialog): PsiElement? {
+        val applicationManager = ApplicationManager.getApplication()
+
         return PostprocessReformattingAspect.getInstance(project).postponeFormattingInside(Computable {
-            ApplicationManager.getApplication().runWriteAction(Computable<PsiElement?> {
+            applicationManager.runWriteAction(Computable<PsiFile?> {
                 val file = try {
-                    generateTestFile(project, d)
+                    val targetDirectory = getFixedTargetDirectory(d, project) ?: d.targetDirectory
+
+                    generateTestFile(project, d, targetDirectory)
                 } catch (e: IncorrectOperationException) {
-                    ApplicationManager.getApplication().invokeLater {
-                        val message =
-                            CodeInsightBundle.message("intention.error.cannot.create.class.message", d.className)
-                        val title = CodeInsightBundle.message("intention.error.cannot.create.class.title")
-                        Messages.showErrorDialog(project, message, title)
-                    }
+                    applicationManager.invokeLater { showErrorMessage(d, project) }
+                    null
+                }
+                catch (e: IOException) {
+                    applicationManager.invokeLater { showErrorMessage(d, project) }
                     null
                 }
 
-                file?.let {
+                file?.apply {
                     // without this the file is created but the caret stays in the original file
-                    CodeInsightUtil.positionCursor(project, file, file)
+                    CodeInsightUtil.positionCursor(project, this, this)
 
                     // Find annotations on the functions from templates and shorten references
-                    val classBody = file.childrenOfType<KtClass>().first().childrenOfType<KtClassBody>().first()
+                    val classBody = this.childrenOfType<KtClass>().first().childrenOfType<KtClassBody>().first()
                     classBody.childrenOfType<KtNamedFunction>().forEach {
                         ShortenReferences.DEFAULT.process(it.annotationEntries.first())
                     }
@@ -60,7 +68,39 @@ class KotlinTestGenerator : TestGenerator {
         })
     }
 
-    private fun generateTestFile(project: Project, d: CreateTestDialog): PsiFile? {
+    private fun showErrorMessage(d: CreateTestDialog, project: Project) {
+        val message = CodeInsightBundle.message("intention.error.cannot.create.class.message", d.className)
+        val title = CodeInsightBundle.message("intention.error.cannot.create.class.title")
+        Messages.showErrorDialog(project, message, title)
+    }
+
+    private fun getFixedTargetDirectory(d: CreateTestDialog, project: Project): PsiDirectory? {
+        val fullyQualifiedName = d.targetClass.qualifiedName ?: return null
+        val targetNamespace = fullyQualifiedName.split(".").dropLast(1)
+
+        val srcModule = ModuleUtilCore.findModuleForPsiElement(d.targetClass) ?: return null
+        val modules: MutableSet<com.intellij.openapi.module.Module> = mutableSetOf()
+        ModuleUtilCore.collectModulesDependsOn(srcModule, modules)
+
+        val name = srcModule.name.split(".")
+        val sourceNamespace = name.dropLast(1).joinToString(".")
+        val sourceModuleName = name.last().replace("Main", "Test")
+
+        val targetCandidate = modules
+            .filter { it.name.contains("test", true) || !it.name.startsWith(sourceNamespace) }
+            .find { it.name.endsWith(sourceModuleName) } ?: return null
+
+        var targetCandidateRoot = ModuleRootManager.getInstance(targetCandidate).contentRoots
+            .firstOrNull { it.name == sourceModuleName } ?: return null
+
+        targetCandidateRoot = targetCandidateRoot.findOrCreateChildData(this, "kotlin")
+        targetNamespace.forEach {
+            targetCandidateRoot = targetCandidateRoot.findOrCreateChildData(this, it)
+        }
+        return targetCandidateRoot.toPsiDirectory(project)
+    }
+
+    private fun generateTestFile(project: Project, d: CreateTestDialog, targetDirectory: PsiDirectory): PsiFile? {
 
         val framework = d.selectedTestFrameworkDescriptor
 
@@ -108,7 +148,7 @@ class KotlinTestGenerator : TestGenerator {
                 classTemplate,
                 d.className,
                 props,
-                d.targetDirectory
+                targetDirectory,
             ) as PsiFile
         }
         return null
