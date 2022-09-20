@@ -19,7 +19,7 @@ intellij {
     // Require the Android plugin (Gradle will choose the correct version):
     plugins.set(listOf("android", "java"))
 
-    localPath.set("/Applications/Android Studio.app/Contents")
+    localPath.set("/Users/vojtech.pesek/AS_CONTENTS")
 }
 
 tasks {
