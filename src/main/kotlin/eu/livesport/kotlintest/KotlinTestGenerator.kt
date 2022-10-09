@@ -82,7 +82,7 @@ class KotlinTestGenerator : TestGenerator {
         val modules: MutableSet<com.intellij.openapi.module.Module> = mutableSetOf()
         ModuleUtilCore.collectModulesDependsOn(srcModule, modules)
 
-        val name = srcModule.name.split(".")
+        val name = srcModule.name.replace("main", "androidMain").split(".")
         val sourceNamespace = name.dropLast(1).joinToString(".")
         val sourceModuleName = name.last().replace("Main", "Test")
 
