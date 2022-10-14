@@ -12,14 +12,14 @@ repositories {
 }
 
 intellij {
+    // Use https://plugins.jetbrains.com/docs/intellij/android-studio-releases-list.html for correct feature set and runtime
+    version.set("213.7172.25")
 
     // Use IntelliJ IDEA CE because it's the basis of the IntelliJ Platform:
     type.set("IC")
 
     // Require the Android plugin (Gradle will choose the correct version):
     plugins.set(listOf("android", "java"))
-
-    localPath.set("/Users/vojtech.pesek/AS_CONTENTS")
 }
 
 tasks {
@@ -37,12 +37,17 @@ tasks {
     }
 
     signPlugin {
-        certificateChain.set(System.getenv("CERTIFICATE_CHAIN"))
-        privateKey.set(System.getenv("PRIVATE_KEY"))
+        certificateChain.set(File(System.getenv("CERTIFICATE_CHAIN") ?: "./.keys/chain.crt").readText(Charsets.UTF_8))
+        certificateChain.set(File(System.getenv("PRIVATE_KEY") ?: "./.keys/private.pem").readText(Charsets.UTF_8))
         password.set(System.getenv("PRIVATE_KEY_PASSWORD"))
     }
 
     publishPlugin {
         token.set(System.getenv("PUBLISH_TOKEN"))
+    }
+
+    runIde {
+        jvmArgs = listOf("-Xmx4g", "-Xms1g")
+        ideDir.set(file("/Users/vojtech.pesek/AS_CONTENTS"))
     }
 }
