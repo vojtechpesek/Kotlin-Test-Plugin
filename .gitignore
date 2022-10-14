@@ -36,3 +36,5 @@ system-test/
 /system/
 
 .DS_Store
+
+.keys
