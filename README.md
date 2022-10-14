@@ -10,6 +10,8 @@ The plugin defines several file templates and uses them to generate test class w
 - [x] Select commonMain as source folder
 - [x] Create icon
 - [ ] Publish plugin on IntelliJ Plugin site
-- [ ] Create tests
-- [ ] Setup GitHub CI
-- [ ] Documentation on How to contribute
+
+## Current limitations
+At the moment the plugin is unable to generate test for the iosTest folder, since the default action cannot offer any suitable folders. Therefore, the dialog never finishes and the plugin never receives callback. 
+
+The **Generate** action inside existing test still produces incorrect annotations. IntelliJ Platform thinks for some reason, that the Kotlin Test Plugin is not applicable. This is probably due to poor knowledge of the framework, rather than a problem in the platform itself.
