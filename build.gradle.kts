@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "eu.livesport"
-version = "0.2-alpha"
+version = "0.2.0"
 
 repositories {
     mavenCentral()
