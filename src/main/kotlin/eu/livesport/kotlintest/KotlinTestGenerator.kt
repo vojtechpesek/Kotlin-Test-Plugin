@@ -16,6 +16,7 @@ import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.impl.source.PostprocessReformattingAspect
+import com.intellij.psi.util.childrenOfType
 import com.intellij.testIntegration.createTest.CreateTestDialog
 import com.intellij.testIntegration.createTest.TestGenerator
 import com.intellij.util.IncorrectOperationException
@@ -26,7 +27,6 @@ import org.jetbrains.kotlin.idea.refactoring.memberInfo.toKotlinMemberInfo
 import org.jetbrains.kotlin.psi.KtClass
 import org.jetbrains.kotlin.psi.KtClassBody
 import org.jetbrains.kotlin.psi.KtNamedFunction
-import org.jetbrains.plugins.groovy.lang.psi.util.childrenOfType
 import java.io.IOException
 import java.util.Properties
 

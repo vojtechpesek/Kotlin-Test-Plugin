@@ -13,7 +13,7 @@ repositories {
 
 intellij {
     // Use https://plugins.jetbrains.com/docs/intellij/android-studio-releases-list.html for correct feature set and runtime
-    version.set("213.7172.25")
+    version.set("221.6008.13")
 
     // Use IntelliJ IDEA CE because it's the basis of the IntelliJ Platform:
     type.set("IC")
@@ -48,6 +48,6 @@ tasks {
 
     runIde {
         jvmArgs = listOf("-Xmx4g", "-Xms1g")
-        ideDir.set(file("/Users/vojtech.pesek/AS_CONTENTS"))
+        ideDir.set(file("/Users/vojtech.pesek/Library/Application Support/JetBrains/Toolbox/apps/AndroidStudio/ch-2/221.6008.13.2211.9237616/Android Studio Preview.app/Contents"))
     }
 }

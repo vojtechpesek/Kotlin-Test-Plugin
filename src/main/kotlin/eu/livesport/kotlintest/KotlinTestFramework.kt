@@ -5,21 +5,20 @@ import com.intellij.codeInsight.intention.AddAnnotationFix
 import com.intellij.execution.JUnitBundle
 import com.intellij.execution.junit.JUnitUtil
 import com.intellij.ide.fileTemplates.FileTemplateDescriptor
-import com.intellij.ide.fileTemplates.FileTemplateManager
-import com.intellij.lang.Language
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.module.Module
 import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.util.IconLoader
-import com.intellij.openapi.util.text.StringUtil
-import com.intellij.psi.*
+import com.intellij.psi.JavaPsiFacade
+import com.intellij.psi.PsiClass
+import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiMethod
 import com.intellij.psi.codeStyle.JavaCodeStyleManager
-import com.intellij.testIntegration.TestFramework
-import org.jetbrains.kotlin.idea.KotlinLanguage
+import com.intellij.testIntegration.JavaTestFramework
 import org.jetbrains.kotlin.psi.KtNamedFunction
 import javax.swing.Icon
 
-class KotlinTestFramework : TestFramework {
+class KotlinTestFramework : JavaTestFramework() {
 
     override fun getDefaultSuperClass(): String = ""
 
@@ -36,28 +35,31 @@ class KotlinTestFramework : TestFramework {
         return isPotentialTestClass(clazz)
     }
 
+    override fun isTestClass(clazz: PsiClass?, canBePotential: Boolean): Boolean {
+        return clazz is PsiElement && isPotentialTestClass(clazz)
+    }
+
     override fun getName(): String = "Kotlin test"
-    override fun getLanguage(): Language = KotlinLanguage.INSTANCE
-    override fun getIcon(): Icon = IconLoader.getIcon("/icon16.png", KotlinTestFramework::class.java)
+
+    override fun getMarkerClassFQName(): String = TEST_ANNOTATION_NAME
+    override fun isTestMethod(element: PsiElement?): Boolean {
+        return testMethod(element)
+    }
+
+    override fun getIcon(): Icon = IconLoader.getIcon("/kotlin-test-icon16.png", KotlinTestFramework::class.java)
 
     override fun getLibraryPath(): String? = null
 
-    override fun findSetUpMethod(element: PsiElement): PsiElement? {
-        if (element is PsiClass) {
-            return element.methods.filterNotNull().find {
-                AnnotationUtil.isAnnotated(it, BEFORE_ANNOTATION_NAME, 0)
-            }
+    override fun findSetUpMethod(clazz: PsiClass): PsiMethod? {
+        return clazz.methods.filterNotNull().find {
+            AnnotationUtil.isAnnotated(it, BEFORE_ANNOTATION_NAME, 0)
         }
-        return null
     }
 
-    override fun findTearDownMethod(element: PsiElement): PsiElement? {
-        if (element is PsiClass) {
-            return element.methods.filterNotNull().find {
-                AnnotationUtil.isAnnotated(it, AFTER_ANNOTATION_NAME, 0)
-            }
+    override fun findTearDownMethod(clazz: PsiClass): PsiMethod? {
+        return clazz.methods.filterNotNull().find {
+            AnnotationUtil.isAnnotated(it, AFTER_ANNOTATION_NAME, 0)
         }
-        return null
     }
 
     override fun findOrCreateSetUpMethod(element: PsiElement): PsiElement? {
@@ -67,11 +69,11 @@ class KotlinTestFramework : TestFramework {
         return null
     }
 
-    private fun findOrCreateSetUpMethod(
+    override fun findOrCreateSetUpMethod(
         clazz: PsiClass,
-    ): PsiMethod? {
+    ): PsiMethod {
         var method = findSetUpMethod(clazz)
-        if (method != null) return method as? PsiMethod
+        if (method != null) return method
         val manager = clazz.manager
         val factory = JavaPsiFacade.getInstance(manager.project).elementFactory
         method = createSetUpPatternMethod(factory)
@@ -103,21 +105,9 @@ class KotlinTestFramework : TestFramework {
         return method
     }
 
-    private fun createSetUpPatternMethod(factory: JVMElementFactory): PsiMethod {
-        val template = FileTemplateManager.getDefaultInstance().getCodeTemplate(
-            setUpMethodFileTemplateDescriptor.fileName
-        )
-        val templateText = StringUtil.replace(StringUtil.replace(template.text, "\${BODY}\n", ""), "\${NAME}", "setUp")
-        return factory.createMethodFromText(templateText, null)
-    }
-
-    override fun isTestMethod(element: PsiElement?): Boolean = testMethod(element)
-
-    override fun isTestMethod(element: PsiElement?, checkAbstract: Boolean): Boolean = testMethod(element)
-
     private fun testMethod(element: PsiElement?): Boolean {
         return when (element) {
-            is KtNamedFunction -> element.annotationEntries.any { it.shortName?.identifier == "Test" || it.shortName?.identifier == "kotlin.test.Test" }
+            is KtNamedFunction -> element.annotationEntries.any { it.shortName?.identifier == "Test" || it.shortName?.identifier == TEST_ANNOTATION_NAME }
             else -> false
         }
     }
