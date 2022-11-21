@@ -34,4 +34,25 @@
         <testFramework id="Kotlin test" implementation="eu.livesport.kotlintest.KotlinTestFramework"/>
         <testGenerator language="kotlin" implementationClass="eu.livesport.kotlintest.KotlinTestGenerator"/>
     </extensions>
+
+    <actions>
+        <group id="KotlinTestGenerateGroup">
+            <separator />
+            <action id="KotlinTestGenerateTestMethod"
+                    class="eu.livesport.kotlintest.action.KotlinTest"
+                    text="Kotlin Test Method"
+                    icon="eu.livesport.kotlintest.icons.MyIcons.ActionGroup"
+            />
+            <action id="KotlinTestGenerateSetupMethod"
+                    class="eu.livesport.kotlintest.action.KotlinSetUp"
+                    text="Kotlin Test SetUp Method"
+            />
+            <action id="KotlinTestGenerateTeardownMethod"
+                    class="eu.livesport.kotlintest.action.KotlinTearDown"
+                    text="Kotlin Test Teardown Method"
+            />
+            <add-to-group group-id="GenerateGroup" anchor="last"/>
+        </group>
+
+    </actions>
 </idea-plugin>

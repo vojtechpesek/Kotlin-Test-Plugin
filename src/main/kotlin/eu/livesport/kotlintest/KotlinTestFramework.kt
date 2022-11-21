@@ -15,6 +15,7 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.codeStyle.JavaCodeStyleManager
 import com.intellij.testIntegration.JavaTestFramework
+import eu.livesport.kotlintest.utils.isUnderTestSources
 import org.jetbrains.kotlin.psi.KtNamedFunction
 import javax.swing.Icon
 
