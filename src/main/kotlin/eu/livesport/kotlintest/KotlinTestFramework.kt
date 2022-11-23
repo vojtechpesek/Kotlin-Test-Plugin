@@ -5,6 +5,7 @@ import com.intellij.codeInsight.intention.AddAnnotationFix
 import com.intellij.execution.JUnitBundle
 import com.intellij.execution.junit.JUnitUtil
 import com.intellij.ide.fileTemplates.FileTemplateDescriptor
+import com.intellij.lang.Language
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.module.Module
 import com.intellij.openapi.ui.Messages
@@ -15,7 +16,10 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.codeStyle.JavaCodeStyleManager
 import com.intellij.testIntegration.JavaTestFramework
+import com.intellij.testIntegration.TestFramework
 import eu.livesport.kotlintest.utils.isUnderTestSources
+import org.jetbrains.kotlin.idea.KotlinLanguage
+import org.jetbrains.kotlin.idea.util.module
 import org.jetbrains.kotlin.psi.KtNamedFunction
 import javax.swing.Icon
 
@@ -41,7 +45,7 @@ class KotlinTestFramework : JavaTestFramework() {
     }
 
     override fun getName(): String = "Kotlin test"
-
+    override fun getLanguage(): Language = KotlinLanguage.INSTANCE
     override fun getMarkerClassFQName(): String = TEST_ANNOTATION_NAME
     override fun isTestMethod(element: PsiElement?): Boolean {
         return testMethod(element)
@@ -62,6 +66,8 @@ class KotlinTestFramework : JavaTestFramework() {
             AnnotationUtil.isAnnotated(it, AFTER_ANNOTATION_NAME, 0)
         }
     }
+
+    override fun isFrameworkAvailable(clazz: PsiElement): Boolean = clazz.module?.let { isLibraryAttached(it) } ?: false
 
     override fun findOrCreateSetUpMethod(element: PsiElement): PsiElement? {
         if (element is PsiClass) {
@@ -128,5 +134,9 @@ class KotlinTestFramework : JavaTestFramework() {
 
     override fun isLibraryAttached(module: Module): Boolean {
         return true
+    }
+
+    companion object {
+        fun isTheSame(framework: TestFramework) = framework is KotlinTestFramework
     }
 }
