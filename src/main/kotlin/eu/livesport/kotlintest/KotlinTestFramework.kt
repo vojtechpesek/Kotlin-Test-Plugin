@@ -70,6 +70,7 @@ class KotlinTestFramework : JavaTestFramework() {
         return null
     }
 
+    @Suppress("DialogTitleCapitalization")
     override fun findOrCreateSetUpMethod(
         clazz: PsiClass,
     ): PsiMethod {
@@ -85,6 +86,8 @@ class KotlinTestFramework : JavaTestFramework() {
                 if (ApplicationManager.getApplication().isUnitTestMode) Messages.OK else Messages.showOkCancelDialog(
                     JUnitBundle.message("create.setup.dialog.message", "@BeforeTest"),
                     JUnitBundle.message("create.setup.dialog.title"),
+                    "OK",
+                    "Cancel",
                     Messages.getWarningIcon()
                 )
             if (exit == Messages.OK) {
