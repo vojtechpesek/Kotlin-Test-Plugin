@@ -15,11 +15,10 @@
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
     <description><![CDATA[
     <p>Adds support for generating Tests (via Navigate | Test) for <a href="https://kotlinlang.org/api/latest/kotlin.test/"><b>kotlin.test</b></a> framework in multiplatform mobile projects.</p>
-    <p>It currently supports generating tests in the right folder (for androidMain and commonMain) and includes templates for test, setup and teardown methods. </p>
+    <p>It currently supports generating tests in the right folder (for androidMain and commonMain) and includes templates for test, setup and teardown methods. It can also generate these methods for existing tests using Code | Generate action</p>
     <p>Current limitations:
     <ul>
         <li>Generating test for iosMain does not work
-        <li>Generating setup, teardown and test method within existing test does not work
     </ul></p>
   ]]></description>
 
