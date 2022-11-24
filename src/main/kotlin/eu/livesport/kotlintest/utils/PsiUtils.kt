@@ -26,7 +26,10 @@ fun correctK2KIssue(project: Project, editor: Editor) {
         project.executeWriteCommand("Correct K2K Issue") {
             PsiDocumentManager.getInstance(project).commitAllDocuments()
             with(editor.document) {
-                setText(text.replace(": `fun`", ""))
+                setText(text
+                    .replace(": `fun`", "")
+                    .replace("internal fun", "fun")
+                )
             }
         }
     } catch (e: IncorrectOperationException) {
