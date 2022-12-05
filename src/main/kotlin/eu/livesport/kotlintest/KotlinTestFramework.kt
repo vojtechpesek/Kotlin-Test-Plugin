@@ -2,9 +2,9 @@ package eu.livesport.kotlintest
 
 import com.intellij.codeInsight.AnnotationUtil
 import com.intellij.codeInsight.intention.AddAnnotationFix
-import com.intellij.execution.JUnitBundle
 import com.intellij.execution.junit.JUnitUtil
 import com.intellij.ide.fileTemplates.FileTemplateDescriptor
+import com.intellij.lang.Language
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.module.Module
 import com.intellij.openapi.ui.Messages
@@ -15,10 +15,13 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.codeStyle.JavaCodeStyleManager
 import com.intellij.testIntegration.JavaTestFramework
+import org.jetbrains.kotlin.idea.KotlinLanguage
 import org.jetbrains.kotlin.psi.KtNamedFunction
 import javax.swing.Icon
 
 class KotlinTestFramework : JavaTestFramework() {
+    override fun getLanguage(): Language = KotlinLanguage.INSTANCE
+
 
     override fun getDefaultSuperClass(): String = ""
 
@@ -83,10 +86,10 @@ class KotlinTestFramework : JavaTestFramework() {
             if (AnnotationUtil.isAnnotated(existingMethod, BEFORE_ANNOTATION_NAME, 0)) return existingMethod
             val exit =
                 if (ApplicationManager.getApplication().isUnitTestMode) Messages.OK else Messages.showOkCancelDialog(
-                    JUnitBundle.message("create.setup.dialog.message", "@BeforeTest"),
-                    JUnitBundle.message("create.setup.dialog.title"),
-                    "OK",
-                    "Cancel",
+                    Bundle.message("create.setup.dialog.message", "@BeforeTest"),
+                    Bundle.message("create.setup.dialog.title"),
+                    Bundle.message("create.setup.dialog.ok"),
+                    Bundle.message("create.setup.dialog.cancel"),
                     Messages.getWarningIcon()
                 )
             if (exit == Messages.OK) {
