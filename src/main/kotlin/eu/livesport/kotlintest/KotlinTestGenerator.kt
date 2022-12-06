@@ -1,6 +1,5 @@
 package eu.livesport.kotlintest
 
-import com.intellij.codeInsight.CodeInsightBundle
 import com.intellij.codeInsight.CodeInsightUtil
 import com.intellij.ide.fileTemplates.FileTemplate
 import com.intellij.ide.fileTemplates.FileTemplateManager
@@ -28,9 +27,8 @@ import org.jetbrains.kotlin.psi.KtClass
 import org.jetbrains.kotlin.psi.KtClassBody
 import org.jetbrains.kotlin.psi.KtNamedFunction
 import java.io.IOException
-import java.util.Properties
+import java.util.*
 
-@Suppress("InvalidBundleOrProperty")
 class KotlinTestGenerator : TestGenerator {
 
     override fun toString(): String = KotlinLanguage.INSTANCE.displayName
@@ -68,10 +66,15 @@ class KotlinTestGenerator : TestGenerator {
         })
     }
 
+    @Suppress("DialogTitleCapitalization")
     private fun showErrorMessage(d: CreateTestDialog, project: Project) {
-        val message = CodeInsightBundle.message("intention.error.cannot.create.class.message", d.className)
-        val title = CodeInsightBundle.message("intention.error.cannot.create.class.title")
-        Messages.showErrorDialog(project, message, title)
+        val message = Bundle.message("intention.error.cannot.create.class.message", d.className)
+        val title = Bundle.message("intention.error.cannot.create.class.title")
+        Messages.showErrorDialog(
+            project,
+            message,
+            title,
+        )
     }
 
     private fun getFixedTargetDirectory(d: CreateTestDialog, project: Project): PsiDirectory? {

@@ -2,7 +2,6 @@ package eu.livesport.kotlintest
 
 import com.intellij.codeInsight.AnnotationUtil
 import com.intellij.codeInsight.intention.AddAnnotationFix
-import com.intellij.execution.JUnitBundle
 import com.intellij.execution.junit.JUnitUtil
 import com.intellij.ide.fileTemplates.FileTemplateDescriptor
 import com.intellij.lang.Language
@@ -90,10 +89,10 @@ class KotlinTestFramework : JavaTestFramework() {
             if (AnnotationUtil.isAnnotated(existingMethod, BEFORE_ANNOTATION_NAME, 0)) return existingMethod
             val exit =
                 if (ApplicationManager.getApplication().isUnitTestMode) Messages.OK else Messages.showOkCancelDialog(
-                    JUnitBundle.message("create.setup.dialog.message", "@BeforeTest"),
-                    JUnitBundle.message("create.setup.dialog.title"),
-                    "OK",
-                    "Cancel",
+                    Bundle.message("create.setup.dialog.message", "@BeforeTest"),
+                    Bundle.message("create.setup.dialog.title"),
+                    Bundle.message("create.setup.dialog.ok"),
+                    Bundle.message("create.setup.dialog.cancel"),
                     Messages.getWarningIcon()
                 )
             if (exit == Messages.OK) {
