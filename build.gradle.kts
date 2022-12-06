@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "eu.livesport"
-version = "0.4.1"
+version = "0.5.0"
 
 repositories {
     mavenCentral()
@@ -32,7 +32,7 @@ tasks {
         kotlinOptions.jvmTarget = "11"
     }
     patchPluginXml {
-        sinceBuild.set("213.7172.25")
+        sinceBuild.set("221.6008.13")
         untilBuild.set("222.*")
     }
 
