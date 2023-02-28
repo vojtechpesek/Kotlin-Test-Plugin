@@ -10,7 +10,7 @@ import com.intellij.testIntegration.TestFramework
 import com.intellij.util.IncorrectOperationException
 import com.intellij.util.SmartList
 import org.jetbrains.kotlin.asJava.toLightClass
-import org.jetbrains.kotlin.idea.KotlinBundle
+import org.jetbrains.kotlin.idea.base.resources.KotlinBundle
 import org.jetbrains.kotlin.idea.KotlinLanguage
 import org.jetbrains.kotlin.idea.util.application.executeWriteCommand
 import org.jetbrains.kotlin.psi.KtClassOrObject

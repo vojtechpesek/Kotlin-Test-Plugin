@@ -1,11 +1,11 @@
 plugins {
     id("java")
-    id("org.jetbrains.kotlin.jvm") version "1.6.20"
-    id("org.jetbrains.intellij") version "1.5.2"
+    id("org.jetbrains.kotlin.jvm") version "1.8.0"
+    id("org.jetbrains.intellij") version "1.10.2"
 }
 
 group = "eu.livesport"
-version = "0.5.0"
+version = "0.5.1"
 
 repositories {
     mavenCentral()
@@ -13,7 +13,7 @@ repositories {
 
 intellij {
     // Use https://plugins.jetbrains.com/docs/intellij/android-studio-releases-list.html for correct feature set and runtime
-    version.set("221.6008.13")
+    version.set("223.8617.56")
 
     // Use IntelliJ IDEA CE because it's the basis of the IntelliJ Platform:
     type.set("IC")
@@ -25,15 +25,15 @@ intellij {
 tasks {
     // Set the JVM compatibility versions
     withType<JavaCompile> {
-        sourceCompatibility = "11"
-        targetCompatibility = "11"
+        sourceCompatibility = "17"
+        targetCompatibility = "17"
     }
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions.jvmTarget = "11"
+        kotlinOptions.jvmTarget = "17"
     }
     patchPluginXml {
         sinceBuild.set("221.6008.13")
-        untilBuild.set("222.*")
+        untilBuild.set("223.*")
     }
 
     signPlugin {
@@ -48,6 +48,6 @@ tasks {
 
     runIde {
         jvmArgs = listOf("-Xmx4g", "-Xms1g")
-        ideDir.set(file("/Users/vojtech.pesek/Library/Application Support/JetBrains/Toolbox/apps/AndroidStudio/ch-2/221.6008.13.2211.9237616/Android Studio Preview.app/Contents"))
+        ideDir.set(file("/Users/vojtech.pesek/Library/Application Support/JetBrains/Toolbox/apps/AndroidStudio/ch-1/223.8617.56.2231.9644228/Android Studio Preview.app/Contents"))
     }
 }
