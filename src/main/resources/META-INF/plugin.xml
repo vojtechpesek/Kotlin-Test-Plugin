@@ -22,6 +22,10 @@
     </ul></p>
   ]]></description>
 
+    <change-notes>
+        Add support for Android Studio Giraffe
+    </change-notes>
+
     <!-- Product and plugin compatibility requirements.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
