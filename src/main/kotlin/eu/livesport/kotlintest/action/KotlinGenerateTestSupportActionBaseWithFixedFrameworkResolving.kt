@@ -25,14 +25,14 @@ import com.intellij.testIntegration.TestFramework
 import com.intellij.testIntegration.TestIntegrationUtils.MethodKind
 import com.intellij.ui.components.JBList
 import com.intellij.util.IncorrectOperationException
+import eu.livesport.kotlintest.action.wrapper.BodyType
+import eu.livesport.kotlintest.action.wrapper.generateUnsupportedOrSuperCall
 import eu.livesport.kotlintest.utils.correctK2KIssue
 import eu.livesport.kotlintest.utils.findSuitableFrameworks
 import org.jetbrains.kotlin.descriptors.FunctionDescriptor
 import org.jetbrains.kotlin.idea.base.resources.KotlinBundle
 import org.jetbrains.kotlin.idea.caches.resolve.unsafeResolveToDescriptor
 import org.jetbrains.kotlin.idea.core.insertMembersAfterAndReformat
-import org.jetbrains.kotlin.idea.core.overrideImplement.BodyType
-import org.jetbrains.kotlin.idea.core.overrideImplement.generateUnsupportedOrSuperCall
 import org.jetbrains.kotlin.idea.j2k.j2k
 import org.jetbrains.kotlin.idea.quickfix.createFromUsage.callableBuilder.setupEditorSelection
 import org.jetbrains.kotlin.idea.util.application.executeWriteCommand

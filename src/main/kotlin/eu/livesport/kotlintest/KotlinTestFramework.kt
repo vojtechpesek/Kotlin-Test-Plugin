@@ -18,7 +18,7 @@ import com.intellij.testIntegration.JavaTestFramework
 import com.intellij.testIntegration.TestFramework
 import eu.livesport.kotlintest.utils.isUnderTestSources
 import org.jetbrains.kotlin.idea.KotlinLanguage
-import org.jetbrains.kotlin.idea.util.module
+import org.jetbrains.kotlin.idea.base.util.module
 import org.jetbrains.kotlin.psi.KtNamedFunction
 import javax.swing.Icon
 
